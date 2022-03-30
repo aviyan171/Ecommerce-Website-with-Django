@@ -1,0 +1,62 @@
+{% extends 'store/Main.html' %}
+{% load static  %}
+{% block title %} Laptops {% endblock title %}
+
+{% block main-content %}
+
+<style>
+
+ 
+    .list-group{
+        height: 300px;
+        width: 300px;
+    }
+    
+  
+    .gridd{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 1.5rem;
+    padding-block: 2rem;
+    width:min(95%);
+    margin-inline: auto;
+
+}
+    
+    </style>
+    <div class="gridd">
+    <div class="list-group">
+        <a href="{% url 'laptop' %}" class="list-group-item list-group-item-action active">
+         All Laptops
+        </a>
+        <a href="{% url 'laptopdata' 'Acer'%}" class="list-group-item list-group-item-action">Acer</a>
+        <a href="{% url 'laptopdata' 'HP'%}" class="list-group-item list-group-item-action">HP</a>
+        <a href="{% url 'laptopdata' 'ASUS'%}" class="list-group-item list-group-item-action">ASUS</a>
+        <a href="{% url 'laptopdata' 'Apple'%}" class="list-group-item list-group-item-action">Apple</a>
+        <a href="{% url 'laptopdata' 'Alienware'%}" class="list-group-item list-group-item-action">Alienware</a>
+        <a href="{% url 'laptopdata' 'MSI'%}" class="list-group-item list-group-item-action">MSI</a>
+        <a href="{% url 'laptopdata' 'Microsoft'%}" class="list-group-item list-group-item-action">Microsoft</a>
+        <a href="{% url 'laptopdata' 'Toshiba'%}" class="list-group-item list-group-item-action">Toshiba</a>
+        <a href="{% url 'laptopdata' 'below'%}" class="list-group-item list-group-item-action">Below 100000</a>
+        <a href="{% url 'laptopdata' 'above'%}" class="list-group-item list-group-item-action">Above 100000</a>
+        <a href="{% url 'laptopdata' 'below40000'%}" class="list-group-item list-group-item-action">below 40000</a>
+    </div>
+
+
+    
+      <div class="prod-container">
+            {% for product in Laptop%}
+            <a href="{% url 'productdetails' product.id%}" class="btn">
+            <img src='/media/{{product.Image}}' alt="" height="200px">
+            <br>
+            <span class="fw-bold">{{product.Product_Name}}</span>
+            <br>
+              <span class="fs-5">
+                Rs.{{product.Price}}</span>
+                <br>
+            {% endfor %}  
+          </a>
+          </div>
+        </div>
+       
+      {% endblock main-content %}

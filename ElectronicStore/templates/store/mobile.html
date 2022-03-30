@@ -1,0 +1,65 @@
+{% extends 'store/Main.html' %}
+{% load static  %}
+{% block title %} Laptops {% endblock title %}
+
+{% block main-content %}
+
+<style>
+
+ 
+.list-group{
+    height: 300px;
+    width: 300px;
+}
+
+ .gridd{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 1.5rem;
+    padding-block: 2rem;
+    width:min(95%);
+    margin-inline: auto;
+
+}
+
+/* .prod{
+    flex: 1;
+}   */
+
+</style>
+<div class="gridd">
+<div class="list-group">
+    <a href="{% url 'mobile' %}" class="list-group-item list-group-item-action ">
+     All Mobile Phone
+    </a>
+    <a href="{% url 'mobiledata' 'Samsung'%}" class="list-group-item list-group-item-action">Samsung</a>
+    <a href="{% url 'mobiledata' 'AGM'%}" class="list-group-item list-group-item-action">AGM</a>
+    <a href="{% url 'mobiledata' 'Sony'%}" class="list-group-item list-group-item-action">Sony</a>
+    <a href="{% url 'mobiledata' 'Tracphone'%}" class="list-group-item list-group-item-action">Tracphone</a>
+    <a href="{% url 'mobiledata' 'Google'%}" class="list-group-item list-group-item-action">Google</a>
+    <a href="{% url 'mobiledata' 'Nokia'%}" class="list-group-item list-group-item-action">Nokia</a>
+    <a href="{% url 'mobiledata' 'Oneplus'%}" class="list-group-item list-group-item-action">Oneplus</a>
+    <a href="{% url 'mobiledata' 'Motorola'%}" class="list-group-item list-group-item-action">Motorola</a>
+    <a href="{% url 'mobiledata' 'Apple'%}" class="list-group-item list-group-item-action">Apple</a>
+    <a href="{% url 'mobiledata' 'below'%}" class="list-group-item list-group-item-action">Below 100000</a>
+    <a href="{% url 'mobiledata' 'above'%}" class="list-group-item list-group-item-action">Above 100000</a>
+    <a href="{% url 'mobiledata' 'below40000'%}" class="list-group-item list-group-item-action">below 40000</a>
+  </div>
+
+  <div class="prod-container">
+        {% for product in Mobile%}
+        <a href="{% url 'productdetails' product.id%}" class="btn">
+        <img src='/media/{{product.Image}}' alt="" height="200px">
+        <br>
+        <span class="fw-bold">{{product.Product_Name}}</span>
+        <br>
+          <span class="fs-5">
+            Rs.{{product.Price}}</span>
+            <br>
+        {% endfor %}  
+      </div>
+    </div>
+  
+      
+   
+  {% endblock main-content %}

@@ -1,0 +1,64 @@
+{% extends 'store/Main.html'%}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Login {% endblock title %}
+
+{% block main-content %} 
+
+<style>
+
+.content-section{
+        display: flex;
+        justify-content: center;
+    }
+
+    .form-contents{
+        margin-top: 15px;
+        border-radius: 1rem;
+        border: 1px solid silver;
+        padding: 5px;
+        background-color: navy;
+        color: white;
+        
+    }
+
+    .form-group{
+        padding: 5px;
+    }
+
+    .border-bottom{
+        background-color: red;
+        color: white;
+        border-radius: 1rem;
+        
+    }
+    a{
+        text-decoration: none;
+    }
+   .text-muted{
+       color: white;
+   }
+
+</style>
+
+<div class="content-section">
+    <div class="form-contents">
+        <form method="POST"action="" class="contents">
+            {%csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4"> You need to Login for shopping</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit"> Login</button>
+            </div>
+            <div class="border-top pt-3">
+                <small class="text-muted">
+                   Don't Have Account? <a class="ml-2" href="{% url 'register'%}">Register Now!</a><br>
+                   <a class="ml-2" href="{%url 'password-reset'%}">Forget Password?</a>
+                </small>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock main-content %}

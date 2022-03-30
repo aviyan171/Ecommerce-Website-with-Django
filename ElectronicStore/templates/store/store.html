@@ -1,0 +1,110 @@
+{% extends 'store/Main.html' %}
+{% load static  %}
+{% block title %} Home {% endblock title %}
+
+
+{% block banner_slider %}
+<!--Banner Slider-->
+ <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="{% static 'images/banner/Apple-M1-MacBook-Pro-copy.jpg' %}" style=" height: 500px;width: 100%;" class="d-block w-100" alt="..."> 
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'images/banner/laptopp.jpg' %}" style=" height: 500px;width: 100%;" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'images/banner/onplus8.jpg' %}" style=" height: 500px;width: 100%;" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'images/banner/flashshale.jpg' %}" style=" height: 500px;width: 100%;" class="d-block w-100" alt="...">
+    </div>
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </a>
+</div>
+<!-- End Banner Slider -->
+{% endblock banner_slider %}
+{% block main-content %}
+<style>
+  .item{
+    /* border: 1px solid black; */
+    height: 300px;
+    width:300px;
+    margin-bottom: 20px;
+    
+  }
+
+  .btn-outline-secondary{
+    background-color: red;
+    width: 300px;
+    color: white;
+  }
+
+  .item-laptop{
+    height: 305px;
+    width:305px;
+    margin-bottom: 15px;
+    padding:10px
+  }
+
+ 
+  
+  
+
+  img{
+  background-color: silver;
+  }
+
+ </style>
+<!-- <div class="m-3"> -->
+ <h2>Feature Mobile Phones</h2>
+ <!-- Slider 1 -->
+ <div class="owl-carousel" id="slider1">
+    {% for m in Mobile%}
+    <a href="{% url 'productdetails' m.id%}" class="btn">
+      <div class="item">
+        <img src='/media/{{m.Image}}' alt="" height="200px" >
+        <br>
+        <span class="fw-bold">{{m.Product_Name}}</span>
+        <br>
+          <span class="fs-5">
+            Rs.{{m.Price}}</span>
+            <br>
+             
+          </div>
+        </a>
+    </div>
+    <!-- </div> -->
+    {% endfor %}
+  </div>
+
+  <h2>Feature laptops</h2>
+ <!-- Slider 1 -->
+ <div class="owl-carousel" id="slider2">
+    {% for L in Laptops%}
+    <a href="{% url 'productdetails' L.id%}" class="btn">
+      <div class="item-laptop">
+        <img src='/media/{{L.Image}}' alt="" height="200px">
+        <br>
+        <span class="fw-bold">{{L.Product_Name}}</span>
+        <br>
+          <span class="fs-5">
+            Rs.{{L.Price}}</span>
+            <br>
+          
+
+          </div>
+        </a>
+    </div>
+    <!-- </div> -->
+    {% endfor %}
+  </div>
+ 
+{% endblock main-content %}

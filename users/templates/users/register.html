@@ -1,0 +1,60 @@
+{% extends 'store/Main.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} User Registration {% endblock title %}
+
+{% block main-content %}
+
+<style>
+    .content-section{
+        display: flex;
+        justify-content: center;
+    }
+    
+    .form-contents{
+        color: white;
+        background-color: navy;
+        /* border: 2px solid navy; */
+        /* background-color: silver; */
+        border-radius: 20px;
+        margin-top: 15px;
+       
+    }
+
+   li{
+       color: white;
+   }
+
+   small{
+       color: white;
+   }
+   a{
+       text-decoration: none;
+   }
+
+   .text-muted{
+       color: white;
+   }
+
+
+</style>
+<div class="content-section">
+    <div class="form-contents">
+        <form method="POST"action="" class="contents">
+            {%csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4"> Register Now!! To shop</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit"> Sign Up</button>
+            </div>
+            <div class="border-top pt-3">
+                <small class="text-muted">
+                    ALready Have an Account? <a class="ml-2" href="{% url 'login'%}">Sign In</a>
+                </small>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock main-content %}
