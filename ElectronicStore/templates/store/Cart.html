@@ -264,7 +264,18 @@
         transition: .1s;
     }
 
+    .chg-quantity1{
+        width: 12px;
+        cursor: pointer;
+        display: block;
+        margin-top: 5px;
+        transition: .1s;
+    }
+
     .chg-quantity:hover {
+        opacity: .6;
+    }
+    .chg-quantity1:hover {
         opacity: .6;
     }
 
@@ -302,7 +313,7 @@
 
         <a  class="btn btn-outline-success" href="{% url 'Store' %}">&#x2190; Continue Shopping</a>
  
-      
+        
     <div class="cart">
         
         <div class="products">
@@ -317,25 +328,23 @@
 
                     <h4 class="product-price">Price: ₹{{cart.product.Price}}</h4>
 
-                    <span class="quantity">Quantity: </span>  <span id="quantity1">{{cart.quantity}} </span>
-                    <img class="chg-quantity" id="increase" pid="{{cart.product.id}}" src="{% static  'images/banner/downarrow.png' %}">
-                    <img class="chg-quantity" id="decrease" pid="{{cart.product.id}}" src="{% static  'images/banner/uparrow.png' %}">
+                    <span class="quantity">Quantity: </span>  <span class="quantity1">{{cart.quantity}} </span>
+                    <img class="chg-quantity"  pid="{{cart.product.id}}" src="{% static  'images/banner/downarrow.png' %}">
+                    <img class="chg-quantity1"  pid="{{cart.product.id}}" src="{% static  'images/banner/uparrow.png' %}">
 
-                    <p class="product-remove">
+                    <div class="product-remove" pid="{{cart.product.id}}">
 
-                        <i class="fa fa-trash" aria-hidden="true"></i>
+                        <i class="fa fa-trash" ></i>
 
-                        <span class="remove" pid="{{cart.product.id}}">Remove</span>
-                    </p>
+                        <span class="remove">Remove</span>
+                    </div>
                     
                 </div>
-               
+                
             </div>
             {% endfor %}
-            
         </div>
         
-       
     
 
         <div class="cart-total">
@@ -344,13 +353,13 @@
 
                 <span>Amount: </span>
 
-                <span> ₹ {{amount}} </span>
+                <span id="amount"> ₹ {{amount}} </span>
 
             </p>
 
 
 
-            <P>Total Price (Including Vat): <span> ₹ {{totalprice}}</span></P>
+            <P>Total Price (Including Vat): <span id="totalamount"> ₹ {{totalprice}}</span></P>
 
 
             <a href="{% url 'Checkout' %}">Proceed to Checkout</a>

@@ -63,6 +63,7 @@ def increase_cart(request):
    if request.method == 'GET':
         # user=request.user
         prod_id=request.GET['prod_id']
+        print(prod_id)
         c=model_cart.objects.get(Q(product=prod_id) & Q(user=request.user))
         c.quantity+=1
         c.save()
@@ -72,12 +73,50 @@ def increase_cart(request):
                 tamount=(p.quantity * p.product.Price)
                 shippingandvat=13/100*tamount+100
                 amount+=tamount
-                total_price=amount+shippingandvat
         data={
-              'quantity':c.quantity,
-                    'amount':amount,
-                    'totalprice':total_price,
-                }
+            'quantity':c.quantity,
+            'amount':amount,
+            'totalprice':amount+shippingandvat,
+            }
+        return JsonResponse(data)
+
+def decrease_cart(request):
+   if request.method == 'GET':
+        # user=request.user
+        prod_id=request.GET['prod_id']
+        c=model_cart.objects.get(Q(product=prod_id) & Q(user=request.user))
+        c.quantity-=1
+        c.save()
+        amount=0
+        cart_product=[p for p in model_cart.objects.all() if p.user==request.user ]
+        for p in cart_product:
+                tamount=(p.quantity * p.product.Price)
+                shippingandvat=13/100*tamount+100
+                amount+=tamount
+        data={
+            'quantity':c.quantity,
+            'amount':amount,
+            'totalprice':amount+shippingandvat,
+            }
+        return JsonResponse(data)
+
+def remove_cart(request):
+   if request.method == 'GET':
+        # user=request.user
+        prod_id=request.GET['prod_id']
+        c=model_cart.objects.get(Q(product=prod_id) & Q(user=request.user))
+        c.delete()
+        amount=0
+        shippingandvat=0
+        cart_product=[p for p in model_cart.objects.all() if p.user==request.user ]
+        for p in cart_product:
+                tamount=(p.quantity * p.product.Price)
+                amount+=tamount
+                shippingandvat=13/100*tamount+100
+        data={
+            'amount':amount,
+            'totalprice':amount+shippingandvat,
+             }
         return JsonResponse(data)
     
 
