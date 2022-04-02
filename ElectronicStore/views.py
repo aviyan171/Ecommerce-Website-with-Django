@@ -1,12 +1,22 @@
+from ast import Add
+from audioop import add
 from itertools import product
+from os import stat
+import re
+from urllib import request
+import zoneinfo
 from django.http import JsonResponse
 from django.shortcuts import render,redirect
 from django.views import View
+from matplotlib import use
 from .models import *
 from math import ceil
 from .models import Cart as model_cart
 from django.db.models import Q
 from django.http import JsonResponse
+from .forms import CheckoutForm
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
 # Create your views here.
 def store(request):
     Mobiles=Product.objects.filter(Category="M")
@@ -40,17 +50,17 @@ def show_cart(request):
     if request.user.is_authenticated:
         user=request.user
         cart=model_cart.objects.filter(user=user)
-        print(cart)
+        # print(cart)
         amount=0
        
         total_price=0.0
         cart_product=[p for p in model_cart.objects.all() if p.user==user ]
-        print(cart_product)
+        # print(cart_product)
         if cart_product:
             for p in cart_product:
                 tamount=(p.quantity * p.product.Price)
                 shippingandvat=13/100*tamount+100
-                print(shippingandvat)
+                # print(shippingandvat)
                 amount+=tamount
                 total_price=amount+shippingandvat
                 print(total_price)
@@ -63,7 +73,7 @@ def increase_cart(request):
    if request.method == 'GET':
         # user=request.user
         prod_id=request.GET['prod_id']
-        print(prod_id)
+        # print(prod_id)
         c=model_cart.objects.get(Q(product=prod_id) & Q(user=request.user))
         c.quantity+=1
         c.save()
@@ -120,11 +130,55 @@ def remove_cart(request):
         return JsonResponse(data)
     
 
-def Mainn(request):
-    return render(request,'store/Main.html')
+def Review(request):
+    user=request.user
+    address=Customer.objects.filter(user=user)
+    # print(address)
+    cart_items=model_cart.objects.filter(user=user)
+    # print(cart_items)
+    amount=0.0
+    shippingandvat=0
+    cart_product=[p for p in model_cart.objects.all() if p.user==request.user ]
+    if cart_product:
+        for p in cart_product:
+            tamount=(p.quantity * p.product.Price)
+            shippingandvat=13/100*tamount+100
+            amount+=tamount
+            total_price=amount+shippingandvat
+        return render(request,'store/Review.html',{'totalprice':total_price,'cart':cart_items,'address':address})
 
-def Checkout(request):
-    return render(request,'store/Checkout.html')
+class CheckoutView(View):
+    def get(self,*args,**kwargs):
+        form=CheckoutForm()
+        context={
+            'form':form
+        }
+        return render(self.request,"store/Checkout.html",context)
+
+    def post(self,*args,**kwargs):
+        form=CheckoutForm(self.request.POST or None)
+        if form.is_valid():
+                Name=form.cleaned_data.get('Name')
+                Email=form.cleaned_data.get('Email')
+                # Address=form.cleaned_data.get('Address')
+                # print(Address)
+                City=form.cleaned_data.get('City')
+                print(City)
+                State=form.cleaned_data.get('State')
+                # Zip_code=form.cleaned_data.get('Zip_code')
+                # print(Zip_code)
+                Phone_Number=form.cleaned_data.get('Phone_Number')
+                # print(phonenumber)
+                billing_Address=Delivery_Address(
+                user=self.request.user,Name=Name,Email=Email,City=City,
+                State=State,Phone_Number=Phone_Number
+                )
+                
+                billing_Address.save()
+        return redirect('/paymentdone')
+      
+     
+
 
 def Mobile(request,data=None):
     if data==None:
@@ -153,3 +207,7 @@ def laptop(request,data=None):
         laptop=Product.objects.filter(Category="L").filter(Price__lt=50000,Price__lte=60000)
     return render(request,'store/laptop.html',{"Laptop":laptop})
 
+def payment(request):
+    return render(request,'store/payment.html')
+    
+    

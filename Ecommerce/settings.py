@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'ElectronicStore.apps.ElectronicstoreConfig',
     'users.apps.UsersConfig',
     'crispy_forms',
+    'phonenumber_field',
 
 ]
 

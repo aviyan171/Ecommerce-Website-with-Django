@@ -1,15 +1,27 @@
 
+from operator import mod
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+class Delivery_Address(models.Model):
+    user=models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True)
+    Phone_Number=models.CharField(max_length=10)
+    Name = models.CharField(max_length=90)
+    Email = models.CharField(max_length=111)
+    # Address = models.CharField(max_length=111,null=True)
+    City = models.CharField(max_length=111)
+    State = models.CharField(max_length=111)
+    # Zip_code = models.CharField(max_length=111,default=0,null=True,blank=True)
+    # phonenumber = models.CharField(max_length=111, default=1,null=True,blank=True)
+
 class Customer(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
     Customer_Name=models.CharField(max_length=100,null=True)
-    Email=models.CharField(max_length=100)
+    Cust_Address=models.ForeignKey(Delivery_Address,on_delete=models.CASCADE,default="")
 
     def __str__(self):
-        return self.Customer_Name
+        return str(self.id)
 
 CATEGORY_CHOICES=(
         ("M","Mobile"),
@@ -50,6 +62,7 @@ class Order(models.Model):
     customer=models.ForeignKey(Customer,on_delete=models.CASCADE)
     quantity=models.PositiveIntegerField(default=1)
 
+
     # def __str__(self):
     #     return s(self.id)
         
@@ -62,8 +75,8 @@ STATUS=(
 )
  
 class Order_Update(models.Model):
+    billing_address=models.ForeignKey(Delivery_Address,on_delete=models.SET_NULL,null=True,blank=True)
     user=models.ForeignKey(User,on_delete=models.CASCADE)
-    order=models.ForeignKey(Order,on_delete=models.SET_NULL,null=True)
     customer=models.ForeignKey(Customer,on_delete=models.CASCADE)
     product=models.ForeignKey(Product,on_delete=models.CASCADE)
     update_desc=models.CharField(max_length=60,choices=STATUS,default='pending')
@@ -73,17 +86,9 @@ class Order_Update(models.Model):
     def __str__(self):
         return self.update_desc[0:7] + "....."
 
-class Shipping_Address(models.Model):
-    order=models.ForeignKey(Order,on_delete=models.SET_NULL,null=True)
-    customer=models.ForeignKey(Customer,on_delete=models.CASCADE)
-    Email=models.CharField(max_length=100)
-    Address=models.CharField(max_length=100)
-    City=models.CharField(max_length=100)
-    State=models.CharField(max_length=100)
-    Zip_Code=models.CharField(max_length=100)
 
-    def __str__(self):
-        return self.Address
+
+
 
 
 

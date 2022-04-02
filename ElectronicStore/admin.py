@@ -6,8 +6,7 @@ admin.site.register(Product)
 admin.site.register(Contact)
 admin.site.register(Order)
 admin.site.register(Order_Update)
-admin.site.register(Shipping_Address)
 admin.site.register(Cart)
-
+admin.site.register(Delivery_Address)
 
 # Register your models here.

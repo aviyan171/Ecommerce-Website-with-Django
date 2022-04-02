@@ -1,0 +1,84 @@
+{% extends 'store/Main.html'%}
+{% load static %}
+{% block main-content %}
+
+
+<style>
+.summary-container{
+    display: flex;
+   
+    /* justify-content: center; */
+    
+
+}
+
+.product-summary{
+    justify-content: center;
+    
+}
+.checkout {
+
+display: block;
+
+text-align: center;
+
+height: 40px;
+
+line-height: 40px;
+
+background-color: green;
+
+color: white;
+
+text-decoration: none;
+
+}
+
+.checkout:hover {
+
+background-color: white;
+border: 1px solid green;
+color: green;
+border-radius: 5px;
+
+}
+
+</style>
+
+<h1>Order Summery for {{user}}</h1>
+<div class="summary-container">
+    <div class="product-summary">
+    <div class="product_name">
+        <span>Products</span>
+        {%for carts in cart%}
+        <p> Product Name: {{carts.product.Product_Name}}</p>
+        <span>Quantity:</span>
+        
+        <span>{{carts.quantity}}</span>
+        {% endfor %}
+        </div>
+        
+        <div class="totalamount">
+          
+            <span>Total amount:</span> <span>Rs: {{totalprice}}</span>
+            
+        </div>
+        <div class="address-summar">
+            {% for add in address%}
+            <span> address: {{add.Cust_Address.address}}</span>
+
+            {% endfor %}
+
+        </div>
+        
+      
+        
+
+        <a  class= "checkout" href="{% url 'checkout' %}">Processed to checkout</a>
+
+        
+        
+        {% endblock main-content %}
+
+</div>
+</div>

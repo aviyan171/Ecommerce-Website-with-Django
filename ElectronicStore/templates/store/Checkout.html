@@ -1,161 +1,52 @@
 {% extends 'store/Main.html'%}
 {% load static %}
 {% block main-content %}
-
-<style >
-    .row {
-  display: -ms-flexbox; 
-  display: flex;
-  -ms-flex-wrap: wrap; /* IE10 */
-  flex-wrap: wrap;
-  margin: 0 -16px;
-}
-
-.col-25 {
-  -ms-flex: 25%; /* IE10 */
-  flex: 25%;
-
-}
-
-.col-50 {
-  -ms-flex: 50%; /* IE10 */
-  flex: 50%;
-  
-}
-
-.col-75 {
-  -ms-flex: 75%; /* IE10 */
-  flex: 75%;
-}
-
-.col-25,
-.col-50,
-.col-75 {
-  padding: 0 16px;
-}
-
-.checkout-container {
-  background-color: #f2f2f2;
-  padding: 5px 20px 15px 20px;
-  border: 1px solid lightgrey;
-  border-radius: 3px;
-  /* width: 500px;
-  height: 100%; */
-  /* text-align: center; */
-}
-
-input[type=text] {
-  width: 100%;
-  margin-bottom: 20px;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-}
-
-label {
-  margin-bottom: 10px;
-  display: block;
-}
-
-.icon-container {
-  margin-bottom: 20px;
-  padding: 7px 0;
-  font-size: 24px;
-}
-
-.btn {
-  background-color: #04AA6D;
-  color: white;
-  padding: 12px;
-  margin: 10px 0;
-  border: none;
-  width: 100%;
-  border-radius: 3px;
-  cursor: pointer;
-  font-size: 17px;
-}
-
-.row{
-    background-color: silver;
-}
-
-.btn:hover {
-  background-color: #45a049;
-}
-
-span.price {
-  float: right;
-  color: white;
-}
-
-.cart-container{
-    border: 3px solid blue;
-    margin-bottom: 30px;
-    color: white;
-    background-color: blue;
-}
-
-
-@media (max-width: 800px) {
-  .row {
-    flex-direction: column-reverse;
-  }
-  .col-25 {
-    margin-bottom: 20px;
-  }
-}
-</style>
-<div class="row">
-    <div class="col-75">
-      <div class="checkout-container">
-        <form action="/action_page.php">
-  
-          <div class="row">
-            <div class="col-50">
-              <h3>Shipping Address</h3>
-              <label for="fname"><i class="fa fa-user"></i> Full Name</label>
-              <input  type="text" id="fname" name="firstname" placeholder="John M. Doe">
-              <label for="email"><i class="fa fa-envelope"></i> Email</label>
-              <input  type="text" id="email" name="email" placeholder="john@example.com">
-              <label for="adr"><i class="fas fa-address-card"></i> Address</label>
-              <input class="input-class" type="text" id="adr" name="address" placeholder="542 W. 15th Street">
-              <label for="city"><i class="fas fa-city"></i> City</label>
-              <input class="input-class" type="text" id="city" name="city" placeholder="New York">
-  
-              <div class="row">
-                <div class="col-50">
-                  <label for="state">State</label>
-                  <input class="input-class" type="text" id="state" name="state" placeholder="NY">
-                </div>
-                <div class="col-50">
-                  <label for="zip">Zip</label>
-                  <input class="input-class" type="text" id="zip" name="zip" placeholder="10001">
-                </div>
-              </div>
-            </div>
-          </div>
-          <label>
-              <div class="row">
-            <input type="submit" value="Continue to checkout" class="btn">
-              </div>
-        </form>
-      </div>
+{%load crispy_forms_tags%}
+<!-- <form method="POST" class="card-body">
+    {% csrf_token %}
+<div class='hideable_billing_form'>
+    <div class="md-form mb-5">
+      <input type='text' placeholder='1234 Main St' id='Name' name='Name' class='form-control' />
+      <label for="Name" class="">Name</label>
     </div>
-  
-    <div class="col-25">
-      <div class="cart-container">
-        <a  class="btn btn-outline-success" href="{% url 'cart' %}">&#x2190; Back to cart</a>
-        <h4>Order Summary</h4>
-        <h4>Cart
-          <span class="price">
-            <i class="fa fa-shopping-cart"></i>
-            <b>4</b>
-          </span>
-        </h4>
-        <p>Product 1 <span class="price">$15</span></p>
-        <hr>
-        <p>Total <span class="price"><b>$30</b></span></p>
-      </div>
+
+    <div class="md-form mb-5">
+      <input type="email" placeholder='Apartment or suite' id='Email' name='Email' class='form-control' />
+      <label for="email" class="">Email(optional)</label>
     </div>
-  </div>
+    <div class="md-form mb-5">
+      <input type="text" placeholder='Apartment or suite' id='Address' name='Address' class='form-control' />
+      <label for="Address" class="">Address</label>
+    </div>
+    <div class="md-form mb-5">
+      <input type="text" placeholder='Apartment or suite' id='City' name='City' class='form-control' />
+      <label for="Address" class="">city</label>
+    </div>
+    <div class="md-form mb-5">
+      <input type="text" placeholder='Apartment or suite' id='State' name='State' class='form-control' />
+      <label for="state" class="">state(optional)</label>
+    </div>
+    <div class="md-form mb-5">
+      <input type="text" placeholder='Apartment or suite' id='Zip_code' name='Zip_code' class='form-control' />
+      <label for="state" class="">Zipcode</label>
+    </div>
+    <div class="md-form mb-5">
+      <input type="text" placeholder='Apartment or suite' id='phonenumber' name='phonenumber' class='form-control' />
+      <label for="state" class="">Phone number</label>
+    </div>
+    <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+    </div>
+    </form>
+     -->
+
+
+<div class="content-section">
+<form method="POST">
+    {% csrf_token%}
+    {{form|crispy}}
+    
+
+    <button class="btn btn-primary" type="submit">Place Order</button>
+</form>
+</div>
 {% endblock main-content %}

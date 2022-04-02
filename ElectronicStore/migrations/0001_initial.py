@@ -54,19 +54,6 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Shipping_Address',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('Email', models.CharField(max_length=100)),
-                ('Address', models.CharField(max_length=100)),
-                ('City', models.CharField(max_length=100)),
-                ('State', models.CharField(max_length=100)),
-                ('Zip_Code', models.CharField(max_length=100)),
-                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='ElectronicStore.customer')),
-                ('order', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='ElectronicStore.order')),
-            ],
-        ),
-        migrations.CreateModel(
             name='Order_Update',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -88,4 +75,6 @@ class Migration(migrations.Migration):
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
+
+        
     ]
