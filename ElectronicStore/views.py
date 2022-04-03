@@ -1,4 +1,4 @@
-from ast import Add
+from ast import Add, Del
 from audioop import add
 from itertools import product
 from os import stat
@@ -132,7 +132,6 @@ def remove_cart(request):
 
 def Review(request):
     user=request.user
-    address=Customer.objects.filter(user=user)
     # print(address)
     cart_items=model_cart.objects.filter(user=user)
     # print(cart_items)
@@ -145,7 +144,7 @@ def Review(request):
             shippingandvat=13/100*tamount+100
             amount+=tamount
             total_price=amount+shippingandvat
-        return render(request,'store/Review.html',{'totalprice':total_price,'cart':cart_items,'address':address})
+        return render(request,'store/Review.html',{'totalprice':total_price,'cart':cart_items})
 
 class CheckoutView(View):
     def get(self,*args,**kwargs):
@@ -208,6 +207,49 @@ def laptop(request,data=None):
     return render(request,'store/laptop.html',{"Laptop":laptop})
 
 def payment(request):
-    return render(request,'store/payment.html')
+    user=request.user
+    address=Delivery_Address.objects.filter(user=user)
+    print(address)
+    Customer_details=Customer.objects.filter(user=user)
+    print(Customer_details)
     
+    # print(address)
+    cart_items=model_cart.objects.filter(user=user)
+    print(cart_items)
+    amount=0.0
+    shippingandvat=0
+    cart_product=[p for p in model_cart.objects.all() if p.user==request.user ]
+    if cart_product:
+        for p in cart_product:
+            tamount=(p.quantity * p.product.Price)
+            shippingandvat=13/100*tamount+100
+            amount+=tamount
+            total_price=amount+shippingandvat
+    return render(request,'store/payment.html',{'totalprice':total_price,'cart':cart_items,'address':address})
     
+def paymentcomplete(request):
+    user=request.user
+    # custid=request.GET.get('custid')
+    # Delivery_Addresss=Delivery_Address.objects.get(id=custid)
+    Billing_address=Delivery_Address.objects.filter(user=user)
+    # print(custid)
+    # print(Delivery_Addresss)
+    cart=model_cart.objects.filter(user=user)
+    for c in cart:
+        Order_Update(Customer_Name=user, user=user,product=c.product,quantity=c.quantity).save()
+        c.delete()
+    return redirect("orders")
+
+def orders(request):
+    return render(request,'orders.html')
+
+def feedback(request):
+    if request.method=="POST":
+        
+        Name=request.POST.get('Name','')
+        Email=request.POST.get('Email','')
+        Phone=request.POST.get('Phone','')
+        Feedback=request.POST.get('Feedback','')
+        contact=Contact(Name=Name,Email=Email,Phone=Phone,Feedback=Feedback)
+        contact.save()
+    return render(request,'store/contact.html')

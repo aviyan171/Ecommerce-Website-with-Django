@@ -2,4 +2,29 @@
 {% load static %}
 {% block main-content %}
 
+
+<form action="/paymentcomplete/">
+{%for address in address%}
+<!-- <h1>{{address.Name}}</h1> -->
+
+<h1>Delivery For:{{address.Name}}</h1>
+<h1>Email:{{address.Email}}</h1>
+<h1>City:{{address.City}}</h1>
+<h1>State:{{address.State}}</h1> 
+
+{%endfor%}
+
+
+{% for items in cart%}
+
+<h1>{{items.product.Product_Name}}</h1>
+{% endfor %}
+<h1></h1>
+<button type="submit">Submit</button>
+</form>
+
+
+
+
+
 {% endblock main-content %}

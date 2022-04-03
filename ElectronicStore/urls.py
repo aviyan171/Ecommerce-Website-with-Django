@@ -14,7 +14,10 @@ urlpatterns = [
     path('show-cart/',views.show_cart,name="show-cart"),
     path('checkout/',CheckoutView.as_view(),name="checkout"), 
     path('paymentdone/',views.payment,name="paymentdone"),
+    path('paymentcomplete/',views.paymentcomplete,name="paymentcomplete"),
+    path('orders/',views.orders,name="orders"),
     path('ReviewProduct/',views.Review,name="Review"), 
+    path('feedback/',views.feedback,name="contact"), 
     path('mobile/',views.Mobile,name="mobile"),
     
     path('mobile/<slug:data>',views.Mobile,name="mobiledata"),

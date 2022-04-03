@@ -4,8 +4,26 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+CATEGORY_CHOICES=(
+        ("M","Mobile"),
+        ('L',"Laptop")
+    )
+
+class Product(models.Model):
+    Product_Name=models.CharField(max_length=50)
+    Category=models.CharField(max_length=50, choices=CATEGORY_CHOICES)
+    brand=models.CharField(max_length=50,default="")
+    Price=models.IntegerField(default=0)
+    Description=models.CharField(max_length=10000)
+    Specifications=models.CharField(max_length=10000,null=True)
+    Image=models.ImageField(upload_to="products",default="")
+
+    def __str__(self):
+        return  (self.Product_Name)
+
 class Delivery_Address(models.Model):
     user=models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True)
+    # Products=models.ForeignKey(Product,on_delete=models.CASCADE)
     Phone_Number=models.CharField(max_length=10)
     Name = models.CharField(max_length=90)
     Email = models.CharField(max_length=111)
@@ -23,31 +41,18 @@ class Customer(models.Model):
     def __str__(self):
         return str(self.id)
 
-CATEGORY_CHOICES=(
-        ("M","Mobile"),
-        ('L',"Laptop")
-    )
-class Product(models.Model):
-    Product_Name=models.CharField(max_length=50)
-    Category=models.CharField(max_length=50, choices=CATEGORY_CHOICES)
-    brand=models.CharField(max_length=50,default="")
-    Price=models.IntegerField(default=0)
-    Description=models.CharField(max_length=10000)
-    Specifications=models.CharField(max_length=10000,null=True)
-    Image=models.ImageField(upload_to="products",default="")
 
-    def __str__(self):
-        return  (self.Product_Name)
 
 
 class Contact(models.Model):
-    Name=models.CharField(max_length=500)
+    # user=models.ForeignKey(User,on_delete=models.CASCADE)
+    Name=models.CharField(max_length=500,default="")
     Email=models.CharField(max_length=500, default="")
     Phone=models.IntegerField(default=10)
     Feedback=models.CharField(max_length=500,default="")
 
     def __str__(self):
-        return self.Name
+        return self.Feedback[0:15]
 
 class Cart(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
@@ -77,7 +82,8 @@ STATUS=(
 class Order_Update(models.Model):
     billing_address=models.ForeignKey(Delivery_Address,on_delete=models.SET_NULL,null=True,blank=True)
     user=models.ForeignKey(User,on_delete=models.CASCADE)
-    customer=models.ForeignKey(Customer,on_delete=models.CASCADE)
+    # customer=models.ForeignKey(Customer,on_delete=models.CASCADE)
+    Customer_Name=models.CharField(max_length=10,default="")
     product=models.ForeignKey(Product,on_delete=models.CASCADE)
     update_desc=models.CharField(max_length=60,choices=STATUS,default='pending')
     ordered_date=models.DateField(default=timezone.now())
