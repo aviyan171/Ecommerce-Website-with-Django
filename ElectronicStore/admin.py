@@ -8,5 +8,8 @@ admin.site.register(Order)
 admin.site.register(Order_Update)
 admin.site.register(Cart)
 admin.site.register(Delivery_Address)
+admin.site.register(Product_Review)
+
+
 
 # Register your models here.

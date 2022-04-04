@@ -170,13 +170,59 @@ body {
                 <div class="details col-md-6">
                     <h3 class="product-title">{{Product.Product_Name}}</h3>
                     <div class="rating">
-                        <span class="reviews">Reviews</span>
+                      
+                        <span class="reviews">Reviews</span> 
                         <div class="stars">
+                          {% if user.is_authenticated%}
+                          {%if canAdd%}
+                        <button data-bs-toggle="modal" data-bs-target="#productReview" type="button" class="btn btn-warning btn-sm reviewBtn">Add Review</button>
+                        {%endif%}
+                        {%endif%}
+                          
+                          <!-- Modal -->
+                          <div class="modal fade" id="productReview" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel">Review the Products</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  <form  method="post" id="addForm" action="{%url 'save_review' Product.id%}">
+                                    {% csrf_token %}
+                                  <table class="table table-bordered">
+                                    {{reviewForm.as_table}}
+                                    <tr>
+                                      <td colspan="2">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                        <input type="reset" value="reset" id="reset" />
+                                      </td>
+                                    </tr>
+                                  </table>
+                                  <p class="ajaxRes"></p>
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      
+                          <div class="reviewlist">
+                            <span class="Avg-rating"><span>Avg reviews:</span> {{avg_reviews.avg_rating}}/5</span>
+                            <blockquote>
+                              {% for review in reviews %}
+                              <small>{{review.review_text}}</small>
+                             
+                          <br>
+                          {% for star in review.review_rating|ljust:review.review_rating%}
                             <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="fa fa-star"></span>
+                           {% endfor %}
+                           
+                          </blockquote>
+                          <span>Reviewed by: {{review.user}}</span>
+                          </div>
+                           
+                          {% endfor %}
+                            
                         </div>
                     </div>
                     <h5 class="description">Description</h5>

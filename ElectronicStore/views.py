@@ -12,11 +12,10 @@ from matplotlib import use
 from .models import *
 from math import ceil
 from .models import Cart as model_cart
-from django.db.models import Q
+from django.db.models import Q,Avg
 from django.http import JsonResponse
-from .forms import CheckoutForm
-from django.core.exceptions import ObjectDoesNotExist
-from django.contrib import messages
+from .forms import CheckoutForm,ReviewAdd
+
 # Create your views here.
 def store(request):
     Mobiles=Product.objects.filter(Category="M")
@@ -30,8 +29,18 @@ def store(request):
 
 class product_Details(View):
     def get(self,request,pk):
+        user=request.user
         product=Product.objects.get(pk=pk)
-        return render(request,'store/productdetails.html',{'Product':product})
+        reviewForm=ReviewAdd()
+        canAdd=True
+        reviewCheck=Product_Review.objects.filter(user=user,product=product).count()
+        if user.is_authenticated:
+            if reviewCheck>0:
+                canAdd=False
+
+        reviews=Product_Review.objects.filter(product=product)
+        avg_reviews=Product_Review.objects.filter(product=product).aggregate(avg_rating=Avg('review_rating'))
+        return render(request,'store/productdetails.html',{'Product':product,'reviewForm':reviewForm,'canAdd':canAdd,'reviews':reviews,'avg_reviews':avg_reviews})
 
 
 
@@ -253,3 +262,21 @@ def feedback(request):
         contact=Contact(Name=Name,Email=Email,Phone=Phone,Feedback=Feedback)
         contact.save()
     return render(request,'store/contact.html')
+
+def save_review(request,pid):
+    product=Product.objects.get(pk=pid)
+    user=request.user
+    review=Product_Review.objects.create(
+        user=user,
+        product=product,
+        review_text=request.POST['review_text'],
+        review_rating=request.POST['review_rating'],
+    )
+    data={
+        'review_text':request.POST['review_text'],
+        'review_rating':request.POST['review_rating'],
+    }
+    review.save()
+    avg_reviews=Product_Review.objects.filter(product=product).aggregate(avg_rating=Avg('review_rating'))
+    return JsonResponse({'bool':True,"data":data,"avg_reviwes":avg_reviews})
+    

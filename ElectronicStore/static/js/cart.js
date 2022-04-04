@@ -65,6 +65,41 @@ $('.product-remove').click(function(){
 
 })
 
+$("#addForm").submit(function(e){
+  
+    $.ajax({
+      data:$(this).serialize(),
+      method:$(this).attr('method'),
+      url:$(this).attr('action'),
+      dataType:'json',
+      success:function(res){
+        if(res.bool==true){
+
+            $(".ajaxRes").html('Data has been added.')
+            $("#reset").trigger('click')
+            $(".reviewBtn").hide()
+
+            let _html='<div class="reviewlist">'
+        //      _html+='<blockquote>'
+            _html+='<small>'+res.data.review_text+'</small>'
+            _html+='<br>'
+            for (let i=1; i<=res.data.review_rating;i++){
+            _html+='<span class="fa fa-star checked"></span>'
+           }
+           _html+='</blockquote>'
+        //    _html+='<span>' +res.data.user+'</span>'
+           _html+='</div>'
+
+           $(".reviewlist").prepend(_html)
+           $('#productReview').modal('hide')
+           $('.Avg-rating').text(res.avg_reviwes.avg_rating.toFixed(1))
+        }
+      }
+    })
+    e.preventDefault()
+  })
+  
+
 
 // const increaseBtn=document.querySelector(".chg-quantity")
 // const productinfo=document.querySelector(".product-info")
