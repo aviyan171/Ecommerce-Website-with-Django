@@ -80,14 +80,15 @@ $("#addForm").submit(function(e){
             $(".reviewBtn").hide()
 
             let _html='<div class="reviewlist">'
-        //      _html+='<blockquote>'
+            _html+='<span>Avg reviews:'+ res.avg_reviwes.avg_rating.toFixed(1)+'/5</span> '
+             _html+='<blockquote>'
             _html+='<small>'+res.data.review_text+'</small>'
             _html+='<br>'
             for (let i=1; i<=res.data.review_rating;i++){
             _html+='<span class="fa fa-star checked"></span>'
            }
            _html+='</blockquote>'
-        //    _html+='<span>' +res.data.user+'</span>'
+           _html+='<span> Reviewed by:' +res.data.user+'</span>'
            _html+='</div>'
 
            $(".reviewlist").prepend(_html)

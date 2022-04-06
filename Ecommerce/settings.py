@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'ElectronicStore.apps.ElectronicstoreConfig',
     'users.apps.UsersConfig',
     'crispy_forms',
-    'phonenumber_field',
+    'rest_framework',
+    'khalti',
 
 ]
 
@@ -142,3 +143,6 @@ EMAIL_PORT=587
 EMAIL_USE_TLS=True
 EMAIL_HOST_USER='abhiyanupreti76@gmail.com'
 EMAIL_HOST_PASSWORD='spdrbgvnyatbbnmf'
+
+# KHALTI_SECRET_KEY = 'test_public_key_71a8bbfb50dc4df28e2891eeb9e57c20'
+# KHALTI_VERIFY_URL = 'https://khalti.com/api/v2/payment/verify/'

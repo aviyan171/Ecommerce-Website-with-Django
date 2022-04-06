@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import product_Details,CheckoutView,payment
+from .views import product_Details,CheckoutView,payment,khaltiRequestView,khaltiverifyView
 
 urlpatterns = [
     path('', views.store,name="Store"),
@@ -16,6 +16,8 @@ urlpatterns = [
     path('paymentdone/',views.payment,name="paymentdone"),
     path('paymentcomplete/',views.paymentcomplete,name="paymentcomplete"),
     path('orders/',views.orders,name="orders"),
+    path('khalti_request/',khaltiRequestView.as_view(),name="khalti_request"),
+    path('khalti_verify/',khaltiverifyView.as_view(),name="khalti_verify"),
     path('ReviewProduct/',views.Review,name="Review"), 
     path('feedback/',views.feedback,name="contact"), 
     path('mobile/',views.Mobile,name="mobile"),

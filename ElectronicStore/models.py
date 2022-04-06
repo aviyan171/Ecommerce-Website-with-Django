@@ -78,7 +78,11 @@ STATUS=(
     ('Delivered','Delivered'),
     ('Cancel','Cancel')
 )
- 
+PAYMENYTMETHOD=(
+    ('Cash on devliery','Cash on delivery'),
+    ("Khalti","Khalti"),
+    )
+
 class Order_Update(models.Model):
     billing_address=models.ForeignKey(Delivery_Address,on_delete=models.SET_NULL,null=True,blank=True)
     user=models.ForeignKey(User,on_delete=models.CASCADE)
@@ -88,7 +92,8 @@ class Order_Update(models.Model):
     update_desc=models.CharField(max_length=60,choices=STATUS,default='pending')
     ordered_date=models.DateField(default=timezone.now())
     quantity=models.PositiveIntegerField(default=1)
-
+    payment_method=models.CharField(max_length=20,choices=PAYMENYTMETHOD,default="Cash on Devliery")
+    payment_complete=models.BooleanField(default=False,null=True)
     def __str__(self):
         return self.update_desc[0:7] + "....."
 

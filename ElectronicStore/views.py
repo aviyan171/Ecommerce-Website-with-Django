@@ -2,19 +2,21 @@ from ast import Add, Del
 from audioop import add
 from itertools import product
 from os import stat
-import re
-from urllib import request
+import requests
 import zoneinfo
 from django.http import JsonResponse
+from django.urls import reverse
 from django.shortcuts import render,redirect
 from django.views import View
 from matplotlib import use
+from matplotlib.style import context
 from .models import *
 from math import ceil
 from .models import Cart as model_cart
 from django.db.models import Q,Avg
 from django.http import JsonResponse
 from .forms import CheckoutForm,ReviewAdd
+
 
 # Create your views here.
 def store(request):
@@ -176,14 +178,16 @@ class CheckoutView(View):
                 # Zip_code=form.cleaned_data.get('Zip_code')
                 # print(Zip_code)
                 Phone_Number=form.cleaned_data.get('Phone_Number')
+                pm=form.cleaned_data.get('payment_option')
                 # print(phonenumber)
                 billing_Address=Delivery_Address(
                 user=self.request.user,Name=Name,Email=Email,City=City,
-                State=State,Phone_Number=Phone_Number
-                )
-                
+                State=State,Phone_Number=Phone_Number)
                 billing_Address.save()
-        return redirect('/paymentdone')
+                if pm=="Khalti":
+                    return redirect(reverse("khalti_request"))
+                else:
+                    return redirect('/paymentdone')
       
      
 
@@ -273,10 +277,74 @@ def save_review(request,pid):
         review_rating=request.POST['review_rating'],
     )
     data={
+        'user':user.username,
         'review_text':request.POST['review_text'],
         'review_rating':request.POST['review_rating'],
     }
     review.save()
     avg_reviews=Product_Review.objects.filter(product=product).aggregate(avg_rating=Avg('review_rating'))
-    return JsonResponse({'bool':True,"data":data,"avg_reviwes":avg_reviews})
+    return JsonResponse({'bool':True,"data":data,"avg_reviwes":avg_reviews,})
+
+
+class khaltiRequestView(View):
+    def get(self,request,*args,**kwargs):
+        user=request.user
+        cart=model_cart.objects.filter(user=user)
+        # product_id=request.GET.get('prod_id')
+        # product=Product.objects.get(id=product_id)
+        print(cart)
+        # print(product)
+        # print(cart)
+        amount=0
+       
+        total_price=0.0
+        cart_product=[p for p in model_cart.objects.all() if p.user==user ]
+        # print(cart_product)
+        if cart_product:
+            for p in cart_product:
+                prod_id=p.product.id
+                prod_name=p.product.Product_Name
+                tamount=(p.quantity * p.product.Price)
+                shippingandvat=13/100*tamount+100
+                # print(shippingandvat)
+                amount+=tamount
+                total_price=amount+shippingandvat
+        context={
+             'carts':cart,'totalprice':total_price,"prod_name":prod_name,"prod_id":prod_id
+        }
+        return render(request,"store/khaltirequest.html",context)
+
+class khaltiverifyView(View):
+    def get(self,request,*args,**kwargs):
+        token=request.GET.get('token')
+        amount=request.GET.get('amount')
+        prod_id=request.GET.get('prod_id')
+        print(token,amount,prod_id)
+
+        url = "https://khalti.com/api/v2/payment/verify/"
+        payload = {
+         "token": token,
+         "amount": amount
+            }
+        headers = {
+        "Authorization": "Key test_secret_key_7238211633a34ec5b671ce99045b5b6f"
+        }
+        response = requests.post(url, payload, headers = headers)
+        resp_dict=response.json()
+        if resp_dict.get('idx'):
+            # order_obj=Order_Update.objects.all()
+            # order_obj.payment_complete=True
+            # order_obj.save()
+            user=request.user
+            cart=model_cart.objects.filter(user=user)
+            for c in cart:
+                Order_Update(Customer_Name=user, user=user,product=c.product,quantity=c.quantity).save()
+                c.delete()
+            success=True
+        else:
+            success=False
+        data={
+            'success':success
+        }
+        return JsonResponse(data)
     
