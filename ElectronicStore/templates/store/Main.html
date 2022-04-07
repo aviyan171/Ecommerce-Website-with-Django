@@ -61,13 +61,15 @@
               {% endif %}
               <ul class="dropdown-menu" aria-labelledby="profileDropdown">
                 <li><a class="dropdown-item" href="{% url 'changepassword'%}">Change Password</a></li>
-                <li><a class="dropdown-item" href="#">Orders</a></li>
+                <li><a class="dropdown-item" href="{% url 'orders'%}">Orders</a></li>
                 
               </ul>
             </li>
+            {% if user.is_authenticated%}
             <li class="nav-item mx-2">
              <a href="{%url 'show-cart' %}" class="nav-link text-white"> <img  id="cart-icon" src="{% static 'images/banner/cart.png' %}"><span class="badge bg-danger">4</span> Cart </a>
             </li>
+            {% endif %}
             {%if user.is_authenticated %}
             <a href="{% url 'logout' %}" class="nav-link text-white"> <img  class="login-icon" src="{% static 'images/banner/login.png' %}"> <span>Logout</span></a>
             {% else %}
@@ -78,6 +80,9 @@
              <a href="{% url 'register'%}" class="nav-link text-white">Registration</a>
              {% endif %}
             </li>
+            <li class="nav-item mx-2">
+              <a href="{% url 'contact' %}" class="nav-link text-white"><span>Contact Us</span></a>
+             </li>
           </ul>
          </div>
        </div>

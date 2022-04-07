@@ -1,6 +1,17 @@
 {% extends 'store/Main.html'%}
 {% load static %}
 {% block main-content %}
-
+{%if order_update%}
 <h1>Order request has been received. We will infrom you soon!!</h1>
+{%else%}
+<h1>No Order Placed Yet!!</h1>
+{% endif %}
+{% for op in order_update%}
+<img src="/media/{{op.product.Image}}" alt=""  style="height: 200px; width: 200px;">
+<p>Product Name:{{op.product.Product_Name}}</p>
+<p>Quantity:{{op.quantity}}</p>
+<p>Price: {{op.product.Price}}</p>
+<p>Order Status: {{op.update_desc}}</p>
+
+{% endfor %}
 {% endblock main-content %}

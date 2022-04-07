@@ -2,21 +2,22 @@ from ast import Add, Del
 from audioop import add
 from itertools import product
 from os import stat
+from unicodedata import name
+from django import dispatch
 import requests
 import zoneinfo
 from django.http import JsonResponse
 from django.urls import reverse
 from django.shortcuts import render,redirect
 from django.views import View
-from matplotlib import use
-from matplotlib.style import context
 from .models import *
 from math import ceil
 from .models import Cart as model_cart
 from django.db.models import Q,Avg
 from django.http import JsonResponse
 from .forms import CheckoutForm,ReviewAdd
-
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 # Create your views here.
 def store(request):
@@ -29,24 +30,38 @@ def store(request):
     params={'Mobile': Mobiles, 'Laptops':Laptop}
     return render(request,'store/store.html',params)
 
+def search(request):
+    Mobiles=Product.objects.filter(Category="M")
+    Laptop=Product.objects.filter(Category="L")
+    # mobilelen= len(Mobiles)
+    # Laptoplen=len(Laptop)
+    # n=(mobilelen+Laptoplen)
+    # nSlides= n//4 + ceil((n/4) + (n//4))
+    params={'Mobile': Mobiles, 'Laptops':Laptop}
+    return render(request,'store/store.html',params)
+
+# @method_decorator(login_required,name='dispatch')
 class product_Details(View):
     def get(self,request,pk):
         user=request.user
         product=Product.objects.get(pk=pk)
+        item_already_in_cart=False
+        if user.is_authenticated:
+            item_already_in_cart=model_cart.objects.filter(Q(product=product.id) & Q(user=request.user)).exists()
         reviewForm=ReviewAdd()
         canAdd=True
-        reviewCheck=Product_Review.objects.filter(user=user,product=product).count()
         if user.is_authenticated:
+            reviewCheck=Product_Review.objects.filter(user=user,product=product).count()
             if reviewCheck>0:
                 canAdd=False
 
         reviews=Product_Review.objects.filter(product=product)
         avg_reviews=Product_Review.objects.filter(product=product).aggregate(avg_rating=Avg('review_rating'))
-        return render(request,'store/productdetails.html',{'Product':product,'reviewForm':reviewForm,'canAdd':canAdd,'reviews':reviews,'avg_reviews':avg_reviews})
+        return render(request,'store/productdetails.html',{'Product':product,'reviewForm':reviewForm,'canAdd':canAdd,'reviews':reviews,'avg_reviews':avg_reviews,'item_already_in_cart':item_already_in_cart})
 
 
 
-
+@login_required
 def Cart(request):
     user=request.user
     product_id=request.GET.get('prod_id')
@@ -140,7 +155,7 @@ def remove_cart(request):
              }
         return JsonResponse(data)
     
-
+@login_required
 def Review(request):
     user=request.user
     # print(address)
@@ -155,8 +170,9 @@ def Review(request):
             shippingandvat=13/100*tamount+100
             amount+=tamount
             total_price=amount+shippingandvat
-        return render(request,'store/Review.html',{'totalprice':total_price,'cart':cart_items})
+            return render(request,'store/Review.html',{'totalprice':total_price,'cart':cart_items})
 
+@method_decorator(login_required,name='dispatch')
 class CheckoutView(View):
     def get(self,*args,**kwargs):
         form=CheckoutForm()
@@ -219,6 +235,7 @@ def laptop(request,data=None):
         laptop=Product.objects.filter(Category="L").filter(Price__lt=50000,Price__lte=60000)
     return render(request,'store/laptop.html',{"Laptop":laptop})
 
+@login_required
 def payment(request):
     user=request.user
     address=Delivery_Address.objects.filter(user=user)
@@ -238,8 +255,9 @@ def payment(request):
             shippingandvat=13/100*tamount+100
             amount+=tamount
             total_price=amount+shippingandvat
-    return render(request,'store/payment.html',{'totalprice':total_price,'cart':cart_items,'address':address})
     
+    return render(request,'store/payment.html',{'totalprice':total_price,'cart':cart_items,'address':address})
+@login_required   
 def paymentcomplete(request):
     user=request.user
     # custid=request.GET.get('custid')
@@ -253,9 +271,13 @@ def paymentcomplete(request):
         c.delete()
     return redirect("orders")
 
+@login_required
 def orders(request):
-    return render(request,'orders.html')
+    order_info=Order_Update.objects.filter(user=request.user)
+    print(order_info)
+    return render(request,'orders.html',{'order_update':order_info})
 
+@login_required
 def feedback(request):
     if request.method=="POST":
         
@@ -267,6 +289,7 @@ def feedback(request):
         contact.save()
     return render(request,'store/contact.html')
 
+@login_required
 def save_review(request,pid):
     product=Product.objects.get(pk=pid)
     user=request.user
@@ -285,7 +308,7 @@ def save_review(request,pid):
     avg_reviews=Product_Review.objects.filter(product=product).aggregate(avg_rating=Avg('review_rating'))
     return JsonResponse({'bool':True,"data":data,"avg_reviwes":avg_reviews,})
 
-
+@method_decorator(login_required,name='dispatch')
 class khaltiRequestView(View):
     def get(self,request,*args,**kwargs):
         user=request.user
@@ -314,6 +337,7 @@ class khaltiRequestView(View):
         }
         return render(request,"store/khaltirequest.html",context)
 
+@method_decorator(login_required,name='dispatch')
 class khaltiverifyView(View):
     def get(self,request,*args,**kwargs):
         token=request.GET.get('token')
@@ -327,7 +351,7 @@ class khaltiverifyView(View):
          "amount": amount
             }
         headers = {
-        "Authorization": "Key test_secret_key_7238211633a34ec5b671ce99045b5b6f"
+        "Authorization": "Key live_secret_key_f320424565d5448a96a2d2a029956917"
         }
         response = requests.post(url, payload, headers = headers)
         resp_dict=response.json()
@@ -347,4 +371,5 @@ class khaltiverifyView(View):
             'success':success
         }
         return JsonResponse(data)
-    
+
+

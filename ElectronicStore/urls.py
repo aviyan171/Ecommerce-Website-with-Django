@@ -21,6 +21,7 @@ urlpatterns = [
     path('ReviewProduct/',views.Review,name="Review"), 
     path('feedback/',views.feedback,name="contact"), 
     path('mobile/',views.Mobile,name="mobile"),
+    path('search/',views.search,name="search"),
     path('save_review/<int:pid>',views.save_review,name="save_review"),
     path('mobile/<slug:data>',views.Mobile,name="mobiledata"),
     path('laptop/',views.laptop,name="laptop"),
