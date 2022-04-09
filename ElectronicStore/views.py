@@ -4,6 +4,7 @@ from itertools import product
 from os import stat
 from unicodedata import name
 from django import dispatch
+from matplotlib.pyplot import title
 import requests
 import zoneinfo
 from django.http import JsonResponse
@@ -31,14 +32,16 @@ def store(request):
     return render(request,'store/store.html',params)
 
 def search(request):
-    Mobiles=Product.objects.filter(Category="M")
-    Laptop=Product.objects.filter(Category="L")
+    q=request.GET.get('q')
+    data=Product.objects.filter(Product_Name__icontains=q).order_by('-id')
+    print(data)
+    # Laptop=Product.objects.filter(Category="L")
     # mobilelen= len(Mobiles)
     # Laptoplen=len(Laptop)
     # n=(mobilelen+Laptoplen)
     # nSlides= n//4 + ceil((n/4) + (n//4))
-    params={'Mobile': Mobiles, 'Laptops':Laptop}
-    return render(request,'store/store.html',params)
+    params={'data': data, }
+    return render(request,'store/search.html',params)
 
 # @method_decorator(login_required,name='dispatch')
 class product_Details(View):

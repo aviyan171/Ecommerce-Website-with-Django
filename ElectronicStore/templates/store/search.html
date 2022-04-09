@@ -1,0 +1,33 @@
+{% extends 'store/Main.html'%}
+{% load static %}
+{% block main-content %}
+
+
+{% for product in data%}
+{% if product.Product_Name == ""%}
+<h2>Sorry  couldnot found the product </h2>
+{%else%}
+<h2>Search result for {{request.GET.q}}</h2>
+
+{% endif %}
+  {% endfor %}
+ <!-- Slider 1 -->
+    {% for product in data%}
+    <a href="{% url 'productdetails' product.id%}" class="btn">
+      <div class="item-laptop">
+        <img src='/media/{{product.Image}}' alt="" height="200px">
+        <br>
+        <span class="fw-bold">{{product.Product_Name}}</span>
+        <br>
+          <span class="fs-5">
+            Rs.{{product.Price}}</span>
+            <br>
+          
+
+          </div>
+        </a>
+        {% endfor %}
+    </div>
+    <!-- </div> -->
+    
+{% endblock main-content %}
