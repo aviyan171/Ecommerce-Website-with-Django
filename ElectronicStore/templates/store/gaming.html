@@ -1,0 +1,61 @@
+{% extends 'store/Main.html' %}
+{% load static  %}
+{% block title %} Gaming {% endblock title %}
+
+{% block main-content %}
+
+<style>
+
+ 
+.list-group{
+    height: 300px;
+    width: 300px;
+}
+
+ .gridd{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 1.5rem;
+    padding-block: 2rem;
+    width:min(95%);
+    margin-inline: auto;
+
+}
+
+/* .prod{
+    flex: 1;
+}   */
+
+</style>
+<div class="gridd">
+<div class="list-group">
+    <a href="{% url 'gaming' %}" class="list-group-item list-group-item-action ">
+     All Gaming
+    </a>
+    <a href="{% url 'gamingdata' 'Microsoft'%}" class="list-group-item list-group-item-action">Microsoft</a>
+    <a href="{% url 'gamingdata' 'Nintendo'%}" class="list-group-item list-group-item-action">Nintendo</a>
+    <a href="{% url 'gamingdata' 'Nvidia'%}" class="list-group-item list-group-item-action">Nvdia</a>
+    <a href="{% url 'gamingdata' 'Sega'%}" class="list-group-item list-group-item-action">Sega</a>
+    <a href="{% url 'gamingdata' 'Sony'%}" class="list-group-item list-group-item-action">Sony</a>
+    <a href="{% url 'gamingdata' 'below'%}" class="list-group-item list-group-item-action">Below 100000</a>
+    <a href="{% url 'gamingdata' 'above'%}" class="list-group-item list-group-item-action">Above 100000</a>
+    <a href="{% url 'gamingdata' 'below40000'%}" class="list-group-item list-group-item-action">below 40000</a>
+  </div>
+
+  <div class="prod-container">
+        {% for product in Gaming%}
+        <a href="{% url 'productdetails' product.id%}" class="btn">
+        <img src='/media/{{product.Image}}' alt="" height="200px">
+        <br>
+        <span class="fw-bold">{{product.Product_Name}}</span>
+        <br>
+          <span class="fs-5">
+            Rs.{{product.Price}}</span>
+            <br>
+        {% endfor %}  
+      </div>
+    </div>
+  
+      
+   
+  {% endblock main-content %}

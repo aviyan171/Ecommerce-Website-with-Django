@@ -83,12 +83,13 @@
     </div>
     <!-- </div> -->
     {% endfor %}
-  </div>
+  
 
   <h2>Feature laptops</h2>
  <!-- Slider 1 -->
+ 
  <div class="owl-carousel" id="slider2">
-    {% for L in Laptops%}
+  {% for L in Laptops%}
     <a href="{% url 'productdetails' L.id%}" class="btn">
       <div class="item-laptop">
         <img src='/media/{{L.Image}}' alt="" height="200px">
@@ -105,6 +106,28 @@
     </div>
     <!-- </div> -->
     {% endfor %}
-  </div>
+
+
+  <h2>Feature Gaming Items</h2>
+ 
+ 
+ <div class="owl-carousel" id="slider2">
+  {% for G in Gaming%}
+    <a href="{% url 'productdetails' G.id%}" class="btn">
+      <div class="item-laptop">
+        <img src='/media/{{G.Image}}' alt="" height="200px">
+        <br>
+        <span class="fw-bold">{{G.Product_Name}}</span>
+        <br>
+          <span class="fs-5">
+            Rs.{{G.Price}}</span>
+            <br>
+          
+
+          </div>
+        </a>
+    </div>
+    <!-- </div> -->
+    {% endfor %}
  
 {% endblock main-content %}

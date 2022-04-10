@@ -24,16 +24,19 @@ from django.utils.decorators import method_decorator
 def store(request):
     Mobiles=Product.objects.filter(Category="M")
     Laptop=Product.objects.filter(Category="L")
+    gaming=Product.objects.filter(Category="G")
+    print(gaming)
     # mobilelen= len(Mobiles)
     # Laptoplen=len(Laptop)
     # n=(mobilelen+Laptoplen)
     # nSlides= n//4 + ceil((n/4) + (n//4))
-    params={'Mobile': Mobiles, 'Laptops':Laptop}
+    params={'Mobile': Mobiles, 'Laptops':Laptop,"Gaming":gaming}
     return render(request,'store/store.html',params)
 
 def search(request):
     q=request.GET.get('q')
     data=Product.objects.filter(Product_Name__icontains=q).order_by('-id')
+    
     print(data)
     # Laptop=Product.objects.filter(Category="L")
     # mobilelen= len(Mobiles)
@@ -221,14 +224,14 @@ def Mobile(request,data=None):
     elif data=='above':
         mobile=Product.objects.filter(Category="M").filter(Price__gt=100000)
     elif data=='below40000':
-        mobile=Product.objects.filter(Category="M").filter(Price__lte=30000)
+        mobile=Product.objects.filter(Category="M").filter(Price__gt=30000,Price__lt=60000)
 
     return render(request,'store/mobile.html',{"Mobile":mobile})
 
 def laptop(request,data=None):
     if data==None:
         laptop=Product.objects.filter(Category="L")
-    elif data=="Acer" or data=="HP" or data=="ASUS" or data=="Apple" or data=="Alienware" or data=="MSI" or data=="Microsoft" or data=="Toshiba":
+    elif data=="Acer" or data=="HP" or data=="ASUS" or data=="Apple" or data=="Alienware" or data=="MSI" or data=="Microsoft" or data=="Toshiba" or data=="Lenovo":
         laptop=Product.objects.filter(Category="L").filter(brand=data)
     elif data=='below':
         laptop=Product.objects.filter(Category="L").filter(Price__lte=100000,Price__gt=50000)
@@ -237,6 +240,19 @@ def laptop(request,data=None):
     elif data=='below40000':
         laptop=Product.objects.filter(Category="L").filter(Price__lt=50000,Price__lte=60000)
     return render(request,'store/laptop.html',{"Laptop":laptop})
+
+def Gaming(request,data=None):
+    if data==None:
+        gaming=Product.objects.filter(Category="G")
+    elif data=="Microsoft" or data=="Nintendo" or data=="Nvidia" or data=="Sega" or data=="Sony":
+        gaming=Product.objects.filter(Category="G").filter(brand=data)
+    elif data=='below':
+        gaming=Product.objects.filter(Category="G").filter(Price__lte=100000,Price__gt=50000)
+    elif data=='above':
+        gaming=Product.objects.filter(Category="G").filter(Price__gt=100000)
+    elif data=='below40000':
+        gaming=Product.objects.filter(Category="G").filter(Price__lt=50000,Price__lte=60000)
+    return render(request,'store/gaming.html',{"Gaming":gaming})
 
 @login_required
 def payment(request):

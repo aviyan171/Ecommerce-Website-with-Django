@@ -6,7 +6,8 @@ from django.utils import timezone
 
 CATEGORY_CHOICES=(
         ("M","Mobile"),
-        ('L',"Laptop")
+        ('L',"Laptop"),
+        ('G',"Gaming")
     )
 
 class Product(models.Model):
