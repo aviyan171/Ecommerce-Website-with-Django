@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ElectronicStore.apps.ElectronicstoreConfig',
     'users.apps.UsersConfig',
+    'comperator.apps.ComperatorConfig',
     'crispy_forms',
     'rest_framework',
     'khalti',

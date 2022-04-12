@@ -12,14 +12,13 @@ from django.urls import reverse
 from django.shortcuts import render,redirect
 from django.views import View
 from .models import *
-from math import ceil
 from .models import Cart as model_cart
 from django.db.models import Q,Avg
 from django.http import JsonResponse
 from .forms import CheckoutForm,ReviewAdd
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-
+from django.core.paginator import Paginator
 # Create your views here.
 def store(request):
     Mobiles=Product.objects.filter(Category="M")

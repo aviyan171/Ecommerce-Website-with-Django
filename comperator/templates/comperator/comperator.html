@@ -1,0 +1,158 @@
+{% extends 'store/Main.html'%}
+{% load static %}
+{% block main-content %}
+<style>
+.mt20{
+    margin-top: 20px;
+}
+.hide{
+    visibility: hidden;
+}
+</style>
+
+<title>{% block title %} comperator {% endblock title %}</title>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<a href="#" class="navbar-brand">Feature Compare</a>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="mt20 col-sm-6">
+            <select name="selectpicker" title="Product 1" data-live-search="true" data-size="15" data-style="btn-light" 
+            data-width="100%"  id="product-1-select">
+            {% if product_list %}
+            <ul>
+                {% for p in product_list %}
+                <option class="select-option" value="{{p.id}}" id="product-1-{{p.id}}">
+                    {{p.Product_Name}}
+                </option>
+                {% endfor %}
+            </ul>
+            {% endif%}
+        </select>
+        <div id="table-placeholder-1">
+
+        </div>
+
+        </div>
+
+        <div class="mt20 col-sm-6">
+            <select name="selectpicker" data-live-search="true" data-size="15" data-style="btn-light" 
+            data-width="100%" title="Product 2" id="product-2-select">
+            {% if product_list %}
+            <ul>
+                {% for p in product_list %}
+                <option class="select-option" value="{{p.id}}" id="product-2-{{p.id}}">
+                    {{p.Product_Name}}
+                </option>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </select>
+        <div id="table-placeholder-2"></div>
+        </div>
+    </div>
+</div>
+<div id="specs-div" class="hide">
+<img src="" class="product-img img-fluid mb38">
+<table id="specs-table" class="table table-hover">
+    <tr>
+         <td>Category</td>
+        <td>SUbcategory</td>
+        <td>Specs</td>
+    </tr> 
+    <tr>
+        <td rowspan="7"> comparison</td>
+        <td>Product Name</td>
+        <td class="Product_Name"> Samsung</td>
+    </tr>
+
+    <tr>
+        <td>Category</td>
+        <td class="Category"></td>
+    </tr>
+
+    <tr>
+        <td>Brand</td>
+        <td class="brand"></td>
+    </tr>
+
+    <tr>
+        <td>Price</td>
+        <td class="price"></td>
+    </tr>
+
+    <tr>
+        <td>Price</td>
+        <td class="price"></td>
+    </tr>
+    <tr>
+        <td>Description</td>
+        <td class="Description"></td>
+    </tr>
+
+    <tr>
+        <td>Specification</td>
+        <td class="Specification"></td>
+    </tr>
+
+
+</table>
+</div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+// $(document).ready(function(){
+//     $('select').selectpicker()
+// })
+//  let apiBaseUrl='api/productsview'
+ $('#product-1-select').change(function(){
+     let productId=this.value
+     $.ajax({
+        type:"GET",
+         url:"api/productsview/" + productId,
+         success:function(response){
+            fillSeacrhResults(response,index=1)
+         },
+         error:function(){
+             alert('something went wrong')
+         }
+     })
+ })
+
+ $('#product-2-select').change(function(){
+    let productId=this.value
+     $.ajax({
+        type:"GET",
+         url:"api/productsview/" + productId,
+         success:function(response){
+            fillSeacrhResults(response,index=2)
+         },
+         error:function(){
+             alert('something went wrong')
+         }
+     })
+ })
+
+ function fillSeacrhResults(jsonResults,index){
+     var resultsObject=jQuery.parseJSON(JSON.stringify(jsonResults))
+      var Product_Name=resultsObject.comparison.Product_Name
+      var table= $('#specs-div').clone()
+      table.find(selector '.Product_Name').html(Product_Name)
+
+      if(index==1){
+        $('#table-placeholder-1').empty()
+        $('#table-placeholder-1').append(specsDiv)
+      }else{
+        $('#table-placeholder-2').empty()
+        $('#table-placeholder-2').append(specsDiv)
+      }
+
+      specsDiv.removeClass('hide')
+ }
+</script>
+{% endblock main-content %}

@@ -2,12 +2,12 @@
 {% load static %}
 {% block main-content %}
 
-
+<!-- <h2>Search result for {{request.GET.q}}</h2> -->
 {% for product in data%}
 {% if product.Product_Name == ""%}
 <h2>Sorry  couldnot found the product </h2>
 {%else%}
-<h2>Search result for {{request.GET.q}}</h2>
+
 
 {% endif %}
   {% endfor %}
