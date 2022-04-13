@@ -8,6 +8,20 @@
 .hide{
     visibility: hidden;
 }
+
+.product-img{
+    height: 200px;
+    width: 200px;
+    margin-top: 15px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+. {
+
+}
 </style>
 
 <title>{% block title %} comperator {% endblock title %}</title>
@@ -55,17 +69,17 @@
     </div>
 </div>
 <div id="specs-div" class="hide">
-<img src="" class="product-img img-fluid mb38">
+<img src="" class="product-img img-fluid mb30">
 <table id="specs-table" class="table table-hover">
     <tr>
-         <td>Category</td>
+         <!-- <td>Category</td> -->
         <td>SUbcategory</td>
         <td>Specs</td>
     </tr> 
     <tr>
-        <td rowspan="7"> comparison</td>
+        <!-- <td rowspan="6"> comparison</td> -->
         <td>Product Name</td>
-        <td class="Product_Name"> Samsung</td>
+        <td class="Product_Name"> </td>
     </tr>
 
     <tr>
@@ -75,18 +89,14 @@
 
     <tr>
         <td>Brand</td>
-        <td class="brand"></td>
+        <td class="Brand"></td>
     </tr>
 
     <tr>
         <td>Price</td>
-        <td class="price"></td>
+        <td class="Price"></td>
     </tr>
 
-    <tr>
-        <td>Price</td>
-        <td class="price"></td>
-    </tr>
     <tr>
         <td>Description</td>
         <td class="Description"></td>
@@ -116,7 +126,7 @@
         type:"GET",
          url:"api/productsview/" + productId,
          success:function(response){
-            fillSeacrhResults(response,index=1)
+            fillSeacrhResults(response,1)
          },
          error:function(){
              alert('something went wrong')
@@ -130,7 +140,7 @@
         type:"GET",
          url:"api/productsview/" + productId,
          success:function(response){
-            fillSeacrhResults(response,index=2)
+            fillSeacrhResults(response,2)
          },
          error:function(){
              alert('something went wrong')
@@ -138,21 +148,69 @@
      })
  })
 
- function fillSeacrhResults(jsonResults,index){
-     var resultsObject=jQuery.parseJSON(JSON.stringify(jsonResults))
-      var Product_Name=resultsObject.comparison.Product_Name
-      var table= $('#specs-div').clone()
-      table.find(selector '.Product_Name').html(Product_Name)
+//  function fillSeacrhResults(jsonResults,index){
+//      var resultsObject=jQuery.parseJSON(JSON.stringify(jsonResults))
+//       var Product_Name=resultsObject.comparison.Product_Name
+//       var table= $('#specs-div').clone()
+//       table.find(selector '.Product_Name').html(Product_Name)
 
-      if(index==1){
-        $('#table-placeholder-1').empty()
-        $('#table-placeholder-1').append(specsDiv)
-      }else{
-        $('#table-placeholder-2').empty()
-        $('#table-placeholder-2').append(specsDiv)
-      }
+//       if(index==1){
+//         $('#table-placeholder-1').empty()
+//         $('#table-placeholder-1').append(specsDiv)
+//       }else{
+//         $('#table-placeholder-2').empty()
+//         $('#table-placeholder-2').append(specsDiv)
+//       }
 
-      specsDiv.removeClass('hide')
- }
+//       specsDiv.removeClass('hide')
+//  }
+
+function fillSeacrhResults(jsonResults,index){
+    let resultsObject=jQuery.parseJSON(JSON.stringify(jsonResults))
+
+    //product Name
+    var Product_Name=resultsObject.Product_Name
+    var Category=resultsObject.Category
+    var Brand=resultsObject.brand
+    var Price=resultsObject.Price
+    var Description=resultsObject.Description
+    var Specification=resultsObject.Specifications
+
+    
+    var specsDiv=$('#specs-div').clone()
+    var table=specsDiv.children('#specs-table')
+
+
+    table.find('.Product_Name').html(Product_Name)
+    table.find('.Category').html(Category)
+    table.find('.Brand').html(Brand)
+    table.find('.Price').html(Price)
+    table.find('.Description').html(Description)
+    table.find('.Specification').html(Specification)
+
+    specsDiv.children('.product-img').attr("src",resultsObject.Image)
+   
+
+
+    // var Category=resultsObject.Category
+    // var specsDiv=$('#specs-div').clone()
+    // var table=specsDiv.children('#specs-table')
+    // table.find('.Category').html(Category)
+
+
+    // var Product_Name=resultsObject.Product_Name
+    // var specsDiv=$('#specs-div').clone()
+    // var table=specsDiv.children('#specs-table')
+    // table.find('.Product_Name').html(Product_Name)
+
+    if(index==1){
+        $("#table-placeholder-1").empty()
+        $("#table-placeholder-1").append(specsDiv)
+    }else{
+        $("#table-placeholder-2").empty()
+        $("#table-placeholder-2").append(specsDiv)
+    }
+    specsDiv.removeClass('hide')
+}
 </script>
 {% endblock main-content %}

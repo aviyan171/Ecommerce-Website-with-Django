@@ -13,7 +13,7 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
 
 def index(request):
     product_list=Product.objects.all()
-    print(product_list)
+    # print(product_list)
     context={
         'product_list':product_list
     }
