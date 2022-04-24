@@ -369,7 +369,7 @@ class khaltiverifyView(View):
          "amount": amount
             }
         headers = {
-        "Authorization": "Key live_secret_key_f320424565d5448a96a2d2a029956917"
+        "Authorization": "Key test_secret_key_7238211633a34ec5b671ce99045b5b6f"
         }
         response = requests.post(url, payload, headers = headers)
         resp_dict=response.json()

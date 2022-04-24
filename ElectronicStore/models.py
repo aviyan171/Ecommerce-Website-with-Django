@@ -63,10 +63,10 @@ class Cart(models.Model):
     # def __str__(self):
     #     return str(self.id)
 
-class Order(models.Model):
-    Date_added=models.DateTimeField(default=timezone.now())
-    customer=models.ForeignKey(Customer,on_delete=models.CASCADE)
-    quantity=models.PositiveIntegerField(default=1)
+# class Order(models.Model):
+#     Date_added=models.DateTimeField(default=timezone.now())
+#     customer=models.ForeignKey(Customer,on_delete=models.CASCADE)
+#     quantity=models.PositiveIntegerField(default=1)
 
 
     # def __str__(self):
