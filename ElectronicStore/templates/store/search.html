@@ -2,6 +2,8 @@
 {% load static %}
 {% block main-content %}
 
+ <title>{% block title %} Seach Result{% endblock title %} </title>
+
 <!-- <h2>Search result for {{request.GET.q}}</h2> -->
 {% for product in data%}
 {% if product.Product_Name == ""%}

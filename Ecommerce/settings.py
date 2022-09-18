@@ -108,8 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.0/topics/i18n/
+
 
 LANGUAGE_CODE = 'en-us'
 
@@ -120,8 +119,6 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
 
@@ -132,8 +129,7 @@ STATIC_URL = 'static/'
 MEDIA_URL='/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_TEMPLATE_PACK='bootstrap4'
@@ -142,8 +138,5 @@ EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST='smtp.gmail.com'
 EMAIL_PORT=587
 EMAIL_USE_TLS=True
-EMAIL_HOST_USER='abhiyanupreti76@gmail.com'
-EMAIL_HOST_PASSWORD='spdrbgvnyatbbnmf'
-
-# KHALTI_SECRET_KEY = 'test_public_key_71a8bbfb50dc4df28e2891eeb9e57c20'
-# KHALTI_VERIFY_URL = 'https://khalti.com/api/v2/payment/verify/'
+EMAIL_HOST_USER=os.environ.get('User')
+EMAIL_HOST_PASSWORD=os.environ.get('Password')

@@ -1,6 +1,6 @@
 {% extends 'store/Main.html' %}
 {% load static  %}
-{% block title %} Laptops {% endblock title %}
+{% block title %} Mobile {% endblock title %}
 
 {% block main-content %}
 
@@ -27,6 +27,7 @@
 }   */
 
 </style>
+
 <div class="gridd">
 <div class="list-group">
     <a href="{% url 'mobile' %}" class="list-group-item list-group-item-action ">
@@ -43,7 +44,7 @@
     <a href="{% url 'mobiledata' 'Apple'%}" class="list-group-item list-group-item-action">Apple</a>
     <a href="{% url 'mobiledata' 'below'%}" class="list-group-item list-group-item-action">Below 100000</a>
     <a href="{% url 'mobiledata' 'above'%}" class="list-group-item list-group-item-action">Above 100000</a>
-    <a href="{% url 'mobiledata' 'below40000'%}" class="list-group-item list-group-item-action">below 40000</a>
+    <a href="{% url 'mobiledata' 'below40000'%}" class="list-group-item list-group-item-action">below 60000</a>
   </div>
 
   <div class="prod-container">

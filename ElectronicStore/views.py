@@ -24,7 +24,6 @@ def store(request):
     Mobiles=Product.objects.filter(Category="M")
     Laptop=Product.objects.filter(Category="L")
     gaming=Product.objects.filter(Category="G")
-    print(gaming)
     # mobilelen= len(Mobiles)
     # Laptoplen=len(Laptop)
     # n=(mobilelen+Laptoplen)
@@ -36,7 +35,6 @@ def search(request):
     q=request.GET.get('q')
     data=Product.objects.filter(Product_Name__icontains=q).order_by('-id')
     
-    print(data)
     # Laptop=Product.objects.filter(Category="L")
     # mobilelen= len(Mobiles)
     # Laptoplen=len(Laptop)
@@ -249,7 +247,7 @@ def Gaming(request,data=None):
         gaming=Product.objects.filter(Category="G").filter(Price__lte=100000,Price__gt=50000)
     elif data=='above':
         gaming=Product.objects.filter(Category="G").filter(Price__gt=100000)
-    elif data=='below40000':
+    elif data=='Below40000':
         gaming=Product.objects.filter(Category="G").filter(Price__lt=50000,Price__lte=60000)
     return render(request,'store/gaming.html',{"Gaming":gaming})
 
@@ -292,7 +290,6 @@ def paymentcomplete(request):
 @login_required
 def orders(request):
     order_info=Order_Update.objects.filter(user=request.user)
-    print(order_info)
     return render(request,'orders.html',{'order_update':order_info})
 
 @login_required
@@ -333,7 +330,6 @@ class khaltiRequestView(View):
         cart=model_cart.objects.filter(user=user)
         # product_id=request.GET.get('prod_id')
         # product=Product.objects.get(id=product_id)
-        print(cart)
         # print(product)
         # print(cart)
         amount=0
@@ -369,7 +365,7 @@ class khaltiverifyView(View):
          "amount": amount
             }
         headers = {
-        "Authorization": "Key test_secret_key_7238211633a34ec5b671ce99045b5b6f"
+        "Authorization": "Key test_secret_key_2273c77ed69345f285c6b6bb17595083"
         }
         response = requests.post(url, payload, headers = headers)
         resp_dict=response.json()

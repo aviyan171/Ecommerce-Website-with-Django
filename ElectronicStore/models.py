@@ -24,15 +24,12 @@ class Product(models.Model):
 
 class Delivery_Address(models.Model):
     user=models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True)
-    # Products=models.ForeignKey(Product,on_delete=models.CASCADE)
     Phone_Number=models.CharField(max_length=10)
     Name = models.CharField(max_length=90)
     Email = models.CharField(max_length=111)
-    # Address = models.CharField(max_length=111,null=True)
     City = models.CharField(max_length=111)
     State = models.CharField(max_length=111)
-    # Zip_code = models.CharField(max_length=111,default=0,null=True,blank=True)
-    # phonenumber = models.CharField(max_length=111, default=1,null=True,blank=True)
+   
 
 class Customer(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
@@ -46,7 +43,6 @@ class Customer(models.Model):
 
 
 class Contact(models.Model):
-    # user=models.ForeignKey(User,on_delete=models.CASCADE)
     Name=models.CharField(max_length=500,default="")
     Email=models.CharField(max_length=500, default="")
     Phone=models.IntegerField(default=10)
@@ -61,16 +57,7 @@ class Cart(models.Model):
     quantity=models.PositiveIntegerField(default=1)
 
     # def __str__(self):
-    #     return str(self.id)
-
-# class Order(models.Model):
-#     Date_added=models.DateTimeField(default=timezone.now())
-#     customer=models.ForeignKey(Customer,on_delete=models.CASCADE)
-#     quantity=models.PositiveIntegerField(default=1)
-
-
-    # def __str__(self):
-    #     return s(self.id)
+    #     return self.product
         
 STATUS=(
     ('Accepted','Accepted'),
@@ -87,7 +74,6 @@ PAYMENYTMETHOD=(
 class Order_Update(models.Model):
     billing_address=models.ForeignKey(Delivery_Address,on_delete=models.SET_NULL,null=True,blank=True)
     user=models.ForeignKey(User,on_delete=models.CASCADE)
-    # customer=models.ForeignKey(Customer,on_delete=models.CASCADE)
     Customer_Name=models.CharField(max_length=10,default="")
     product=models.ForeignKey(Product,on_delete=models.CASCADE)
     update_desc=models.CharField(max_length=60,choices=STATUS,default='Accepted')
@@ -95,8 +81,7 @@ class Order_Update(models.Model):
     quantity=models.PositiveIntegerField(default=1)
     payment_method=models.CharField(max_length=20,choices=PAYMENYTMETHOD,default="Cash on Devliery")
     payment_complete=models.BooleanField(default=False,null=True)
-    # def __str__(self):
-    #     return self.update_desc[0:7] + "....."
+    
 
 RATING=(
     (1,'1'),

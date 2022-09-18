@@ -14,7 +14,7 @@
     var config = {
 
         // replace the publicKey with yours
-        "publicKey": "test_public_key_71a8bbfb50dc4df28e2891eeb9e57c20",
+        "publicKey": "test_public_key_87d7f14b8c63474b9a1a423c05b11837",
         "productIdentity": "{{prod_id}}",
         "productName": "{{prod_name}}",
         "productUrl": "http://localhost:8000",
@@ -28,18 +28,8 @@
             ],
         "eventHandler": {
             onSuccess (payload) {
-                // hit merchant api for initiating verfication
-                // axios.get("/khalti_verify/",{
-                //     parms:{
-                //         'token':payload.token,
-                //         'amount':payload.amount,
-                //         'prod_id':'{{prod_id}}'
-                //     }
-                // }).then(function(resp){
-                //     console.log(resp.data)
-                // })
+               
                 console.log(payload);
-                // verifyPayment(payload)
 
                 $.ajax({
                     type:"GET",
@@ -59,12 +49,7 @@
                         }
                     }
                 })
-            // },
-            // onError (error) {
-            //     console.log(error);
-            // },
-            // onClose () {
-            //     console.log('widget is closing');
+         
              }
         }
     };
@@ -72,7 +57,6 @@
     var checkout = new KhaltiCheckout(config);
     var btn = document.getElementById("payment-button");
     btn.onclick = function () {
-        // minimum transaction amount must be 10, i.e 1000 in paisa.
         checkout.show({amount: {{totalprice}}*100});
     }
 </script>

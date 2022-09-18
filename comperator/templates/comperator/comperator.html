@@ -19,9 +19,8 @@
     width: 50%;
 }
 
-. {
 
-}
+
 </style>
 
 <title>{% block title %} comperator {% endblock title %}</title>
@@ -148,22 +147,7 @@
      })
  })
 
-//  function fillSeacrhResults(jsonResults,index){
-//      var resultsObject=jQuery.parseJSON(JSON.stringify(jsonResults))
-//       var Product_Name=resultsObject.comparison.Product_Name
-//       var table= $('#specs-div').clone()
-//       table.find(selector '.Product_Name').html(Product_Name)
 
-//       if(index==1){
-//         $('#table-placeholder-1').empty()
-//         $('#table-placeholder-1').append(specsDiv)
-//       }else{
-//         $('#table-placeholder-2').empty()
-//         $('#table-placeholder-2').append(specsDiv)
-//       }
-
-//       specsDiv.removeClass('hide')
-//  }
 
 function fillSeacrhResults(jsonResults,index){
     let resultsObject=jQuery.parseJSON(JSON.stringify(jsonResults))
@@ -192,17 +176,7 @@ function fillSeacrhResults(jsonResults,index){
    
 
 
-    // var Category=resultsObject.Category
-    // var specsDiv=$('#specs-div').clone()
-    // var table=specsDiv.children('#specs-table')
-    // table.find('.Category').html(Category)
-
-
-    // var Product_Name=resultsObject.Product_Name
-    // var specsDiv=$('#specs-div').clone()
-    // var table=specsDiv.children('#specs-table')
-    // table.find('.Product_Name').html(Product_Name)
-
+  
     if(index==1){
         $("#table-placeholder-1").empty()
         $("#table-placeholder-1").append(specsDiv)
